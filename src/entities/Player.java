@@ -30,7 +30,7 @@ public class Player extends Entity {
         SCREEN_X = (gp.SCREEN_WIDTH / 2) - (gp.TILE_SIZE / 2);
         SCREEN_Y = (gp.SCREEN_HEIGHT / 2) - (gp.TILE_SIZE / 2);
 
-        solidArea = new Rectangle(1, 1, 46, 46);
+        solidArea = new Rectangle(8, 16, 20, 20);
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
@@ -61,65 +61,57 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if(!moving) {
-            if(keyH.downPressed || keyH.upPressed || keyH.rightPressed || keyH.leftPressed) {
-                if(keyH.upPressed){
-                    direction = EntityDirections.UP;
-                } 
-                else if(keyH.downPressed) {
-                    direction = EntityDirections.DOWN;
-                }
-                else if(keyH.leftPressed) {
-                    direction = EntityDirections.LEFT;
-                }
-                else if(keyH.rightPressed) {
-                    direction = EntityDirections.RIGHT;
-                }
-        
-                collisionOn = false;
-                moving = false;
-                gp.collController.checkTileCollision(this);
-                int objIndex = gp.collController.checkObjectCollision(this, this instanceof Player);
-                pickUpObject(objIndex);
+        moving = false;
 
-                moving = true;
-            } else {
-                spriteBuffer++;
-
-                if(spriteBuffer >= 20) {
-                    spriteIndex = 0;
-                    spriteBuffer = 0;
-                }
+        if(keyH.downPressed || keyH.upPressed || keyH.rightPressed || keyH.leftPressed) {
+            if(keyH.upPressed){
+                direction = EntityDirections.UP;
+            } 
+            else if(keyH.downPressed) {
+                direction = EntityDirections.DOWN;
             }
+            else if(keyH.leftPressed) {
+                direction = EntityDirections.LEFT;
+            }
+            else if(keyH.rightPressed) {
+                direction = EntityDirections.RIGHT;
+            }
+
+            moving = true;
         } else {
-            if(!collisionOn) {
-                switch(direction) {
-                    case EntityDirections.UP:
-                        worldY = Math.max(0, worldY - speed);
-                        break;
-                    case EntityDirections.DOWN:
-                        worldY = Math.min(worldY + speed, gp.WORLD_HEIGHT);
-                        break;
-                    case EntityDirections.LEFT:
-                        worldX = Math.max(worldX - speed, 0);
-                        break;
-                    case EntityDirections.RIGHT:
-                        worldX = Math.min(worldX + speed, gp.WORLD_WIDTH);
-                        break;
-                    default:
-                        break;
-                }
-            }
+            spriteBuffer++;
 
-            spriteCounter++;
-            pixelCounter += speed;
-
-            if(pixelCounter >= gp.TILE_SIZE) {
-                moving = false;
-                pixelCounter = 0;
+            if(spriteBuffer >= 20) {
+                spriteIndex = 0;
+                spriteBuffer = 0;
             }
         }
 
+        collisionOn = false;
+        gp.collController.checkTileCollision(this);
+        int objIndex = gp.collController.checkObjectCollision(this, this instanceof Player);
+        pickUpObject(objIndex);
+
+        if(!collisionOn && moving) {
+            switch(direction) {
+                case EntityDirections.UP:
+                    worldY = Math.max(0, worldY - speed);
+                    break;
+                case EntityDirections.DOWN:
+                    worldY = Math.min(worldY + speed, gp.WORLD_HEIGHT);
+                    break;
+                case EntityDirections.LEFT:
+                    worldX = Math.max(worldX - speed, 0);
+                    break;
+                case EntityDirections.RIGHT:
+                    worldX = Math.min(worldX + speed, gp.WORLD_WIDTH);
+                    break;
+                default:
+                    break;
+            }
+
+            spriteCounter++;
+        }
         if(spriteCounter > 10) {
             spriteIndex = spriteIndex == 0 ? 1 : 0;
             spriteCounter = 0;
