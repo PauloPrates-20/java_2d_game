@@ -18,8 +18,8 @@ public class Player extends Entity {
     public GamePanel gp;
     public KeyHandler keyH;
 
-    public final int SCREEN_X;
-    public final int SCREEN_Y;
+    public int screenX;
+    public int screenY;
 
     public int hasKey = 0;
 
@@ -27,8 +27,8 @@ public class Player extends Entity {
         this.gp = gp;
         this.keyH = keyH;
 
-        SCREEN_X = (gp.SCREEN_WIDTH / 2) - (gp.TILE_SIZE / 2);
-        SCREEN_Y = (gp.SCREEN_HEIGHT / 2) - (gp.TILE_SIZE / 2);
+        screenX = (gp.screenWidth / 2) - (gp.TILE_SIZE / 2);
+        screenY = (gp.screenHeight / 2) - (gp.TILE_SIZE / 2);
 
         solidArea = new Rectangle(8, 16, 20, 20);
         solidAreaDefaultX = solidArea.x;
@@ -43,6 +43,11 @@ public class Player extends Entity {
         worldY = gp.TILE_SIZE * 21;
         speed = 4;
         direction = EntityDirections.DOWN;
+    }
+
+    public void setScreenSettings(int width, int height) {
+        screenX = (width / 2) - (gp.TILE_SIZE / 2);
+        screenY = (height / 2) - (gp.TILE_SIZE / 2);
     }
 
     public void getPlayerImage() {
@@ -131,7 +136,7 @@ public class Player extends Entity {
             case EntityDirections.RIGHT: image = spriteIndex == 0 ? right1 : right2; break;
         }
 
-        g2.drawImage(image, SCREEN_X, SCREEN_Y, null);
+        g2.drawImage(image, screenX, screenY, null);
     }
 
     public void pickUpObject(int i) {

@@ -36,8 +36,8 @@ public class UI {
         if(gp.gameFinished) {
             String text = "YOU FOUND THE TREASURE!";
             int textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-            int x = gp.SCREEN_WIDTH / 2 - textLength / 2;
-            int y = gp.SCREEN_HEIGHT / 2 - gp.TILE_SIZE * 3;
+            int x = gp.screenWidth / 2 - textLength / 2;
+            int y = gp.screenHeight / 2 - gp.TILE_SIZE * 3;
 
             g2.drawString(text, x, y);
 
@@ -46,8 +46,8 @@ public class UI {
 
             text = "CONGRATULATIONS!";
             textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-            x = gp.SCREEN_WIDTH / 2 - textLength / 2;
-            y = gp.SCREEN_HEIGHT / 2 + gp.TILE_SIZE * 2;
+            x = gp.screenWidth / 2 - textLength / 2;
+            y = gp.screenHeight / 2 + gp.TILE_SIZE * 2;
 
             g2.drawString(text, x, y);
 
@@ -56,8 +56,8 @@ public class UI {
 
             text = "Total play time: " + String.format("%.2f", gp.playTime);
             textLength = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-            x = gp.SCREEN_WIDTH / 2 - textLength / 2;
-            y = gp.SCREEN_HEIGHT / 2 + gp.TILE_SIZE * 4;
+            x = gp.screenWidth / 2 - textLength / 2;
+            y = gp.screenHeight / 2 + gp.TILE_SIZE * 4;
 
             g2.drawString(text, x, y);
 
@@ -67,7 +67,7 @@ public class UI {
             g2.drawString("x " + gp.player.hasKey, 74, 65);
     
 
-            g2.drawString("Time: " + String.format("%.2f", gp.playTime), gp.TILE_SIZE * 11, 65);
+            g2.drawString("Time: " + String.format("%.2f", gp.playTime), gp.screenWidth > 768 ? (int)(gp.screenWidth * 0.85) : gp.TILE_SIZE * 11, 65);
             // MESSAGE
             if(messageOn) {
                 g2.setFont(arial_30);

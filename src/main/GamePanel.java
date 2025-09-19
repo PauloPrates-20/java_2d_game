@@ -17,10 +17,10 @@ public class GamePanel extends JPanel implements Runnable {
     public final int SCALE = 3;
 
     public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // 48x48 tile
-    public final int MAX_SCREEN_COL = 16;
-    public final int MAX_SCREEN_ROW = 12;
-    public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
-    public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
+    public int maxScreenCol = 16;
+    public int maxScreenRow = 12;
+    public int screenWidth = TILE_SIZE * maxScreenCol; // 768 pixels
+    public int screenHeight = TILE_SIZE * maxScreenRow; // 576 pixels
 
     // WORLD SETTINGS
     public final int MAX_WORLD_ROW = 50;
@@ -47,11 +47,18 @@ public class GamePanel extends JPanel implements Runnable {
     public ObjectManager objMan = new ObjectManager((this));
 
     public GamePanel() {
-        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+    }
+
+    public void setScreenSettings(int width, int height) {
+        this.screenWidth = width;
+        this.screenHeight = height;
+        this.maxScreenCol = (int)Math.ceil(screenWidth / TILE_SIZE);
+        this.maxScreenRow = (int)Math.ceil(screenHeight / TILE_SIZE);
     }
 
     public void setupGame() {
@@ -116,6 +123,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     protected void paintComponent(Graphics g) {
+        if(screenHeight != getHeight() || screenWidth != getWidth()) {
+            setScreenSettings(getWidth(), getHeight());
+            player.setScreenSettings(screenWidth, screenHeight);
+        }
+
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
